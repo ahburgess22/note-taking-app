@@ -17,6 +17,7 @@ mongo = PyMongo(app)
 # Route to create a new note (POST)
 @app.route('/notes', methods=['POST'])
 def add_note():
+
     try:
         note_data = request.get_json()  # Try to get JSON from the request
         if not note_data:
@@ -50,6 +51,24 @@ def get_notes():
             "content": note["content"]
         })
     return jsonify(output)
+
+
+# Route to remove oldest note (DELETE)
+@app.route('/notes', methods = ['DELETE'])
+def delete_note():
+    
+    try:
+        notes = list(mongo.db.Notes.find().sort('_id', 1)) # Retrieve all notes in descending order
+        if len(notes) > 0:
+            recent_note = notes[0]
+            mongo.db.Notes.delete_one({'_id': recent_note['_id']}) # Delete oldest note by ID
+            return jsonify(message = "Deleted oldest item of list🫡"), 200
+
+        else:
+            return jsonify(message = "No notes found🤷"), 404
+
+    except Exception as e:
+        return jsonify(message=f"Error: {str(e)}"), 500
 
 # Run the flask app
 if __name__ == '__main__':
