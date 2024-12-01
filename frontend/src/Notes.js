@@ -39,34 +39,39 @@ const Notes = () => {
   };
 
   return (
-    <div>
-      <h1>Notes</h1>
+    <div style = {{ textAlign: 'center', padding: '0 100px '}}>
+      <h1>Austin's Notetaking App!</h1>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          value={newNote.name}
-          onChange={handleInputChange}
-          placeholder="Note Name"
-          required
-        />
-        <textarea
-          name="content"
-          value={newNote.content}
-          onChange={handleInputChange}
-          placeholder="Note Content"
-          required
-        />
-        <button type="submit">Add Note</button>
+        <div style = {{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+            <input
+            type="text"
+            name="name"
+            value={newNote.name}
+            onChange={handleInputChange}
+            placeholder="Note Name"
+            required
+            style = {{ flex: 1, textAlign: 'center' }}
+            />
+            <input
+            name="content"
+            value={newNote.content}
+            onChange={handleInputChange}
+            placeholder="Note Content"
+            required
+            style = {{ flex: 1, textAlign: 'center' }}
+            />
+        </div>
+        <button type="submit" style = {{ marginTop: '10px'}}>
+            Add Note
+        </button>
       </form>
 
       <div>
         <h2>All Notes</h2>
-        <ul>
+        <ul style = {{ listStyleType: 'none', padding: 0, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           {notes.map((note, index) => (
-            <li key={index}>
-              <h3>{note.name}</h3>
-              <p>{note.content}</p>
+            <li key={index} style={{ display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
+              <strong>{note.name}:</strong>&nbsp; <span> { note.content}</span>
             </li>
           ))}
         </ul>
