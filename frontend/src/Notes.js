@@ -8,8 +8,14 @@ const Notes = () => {
 
   // Fetch notes from Flask API when the component mounts
   useEffect(() => {
+    const token = localStorage.getItem('authToken')
+    if (!token) {
+        window.location.href = '/login'; // Force redirect to login page
+    } else {
     axios
-      .get('http://127.0.0.1:5000/notes')
+      .get('http://127.0.0.1:5000/notes', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}`}
+      })
       .then((response) => {
         console.log(response.data); // Add a log to inspect the response
         if (Array.isArray(response.data)) {
@@ -21,6 +27,7 @@ const Notes = () => {
       .catch((error) => {
         console.error('There was an error fetching the notes:', error);
       });
+    }
   }, []);
 
   // Handle form input changes
@@ -34,7 +41,9 @@ const Notes = () => {
     e.preventDefault();
 
     axios
-      .post('http://127.0.0.1:5000/notes', newNote)
+      .post('http://127.0.0.1:5000/notes', newNote, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
+      })
       .then((response) => {
         setNotes([...notes, response.data]); // Add the new note to the state
         setNewNote({ name: '', content: '' }); // Clear input fields
@@ -47,7 +56,9 @@ const Notes = () => {
   // Handle deleting oldest note
   const handleDelete = () => {
     axios
-      .delete('http://127.0.0.1:5000/notes')
+      .delete('http://127.0.0.1:5000/notes', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
+      })
       .then((response) => {
         // Fetch the updated list of notes after deletion
         axios
@@ -82,7 +93,9 @@ const Notes = () => {
     const updatedNote = notes.find((note) => note.id === id);
     
     axios
-      .put(`http://127.0.0.1:5000/notes/${id}`, updatedNote)
+      .put(`http://127.0.0.1:5000/notes/${id}`, updatedNote, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
+      })
       .then((response) => {
         // Ensure you're logging the response to see what's being returned
         console.log("Updated Note:", response.data); 
