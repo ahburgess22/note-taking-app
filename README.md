@@ -41,17 +41,17 @@ A simple and secure note-taking web app built with React (frontend) and Flask (b
 ## Backend Setup
 ##### Go to the backend directory:
 
-👉👉👉 cd ../backend
+👉👉👉 cd ../backend 👈👈👈
 
 ##### Install dependencies (ensure you have a virtual environment activated):
 
-👉👉👉 pip install -r requirements.txt
+👉👉👉 pip install -r requirements.txt 👈👈👈
 
 ##### Set up MongoDB (local or cloud) and update the Mongo URI in app.py.
 
 ##### Start the Flask server:
 
-👉👉👉  python app.py
+👉👉👉  python app.py 👈👈👈
 
 ##### The backend will be available at http://localhost:5000.
 
