@@ -53,10 +53,13 @@ def register_user():
 def login_user():
 
     data = request.get_json()
+    print(data['password'])
 
     # Check if the user exists
     user = mongo.db.Users.find_one({'email': data['email']})
+    # print(user)
     if not user:
+        print("Email not in database.")
         return jsonify(message = "User not found."), 404
 
     # Verify the password
@@ -64,9 +67,11 @@ def login_user():
 
         # Generate JWT Token
         token = create_access_token(identity = user['email'], expires_delta = datetime.timedelta(hours=1))
+        print("Success!")
         return jsonify(message = "Login successful! Token valid for 1 hour.", token = token), 200
     
     else:
+        print("Incorrect password")
         return jsonify(message = "Incorrect password."), 400
 
 # Route to get all users (GET)
