@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState({ name: '', content: '' });
   const [editingNote, setEditingNote] = useState(null); // state to track which note is being edited
+  const navigate = useNavigate();
 
   // Fetch notes from Flask API when the component mounts
   useEffect(() => {
@@ -29,6 +31,16 @@ const Notes = () => {
       });
     }
   }, []);
+
+  // Handle logging user out
+  const handleLogout = () => {
+
+    // Remove token from localStorage
+    localStorage.removeItem('authToken');
+
+    // Redirect to login page
+    navigate('/login');
+  };
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -119,6 +131,10 @@ const Notes = () => {
   return (
     <div style={{ textAlign: 'center', padding: '0 100px' }}>
       <h1>Austin's Notetaking App!</h1>
+
+      <button onClick={handleLogout} style = {{ marginBottom: '20px', backgroundColor: 'red', color: 'white', border: '1px solid darkred', padding: '10px 20px', cursor: 'pointer', borderRadius: '5px'}}>
+        Logout
+      </button>
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
         <input
