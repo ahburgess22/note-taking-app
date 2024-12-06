@@ -40,13 +40,19 @@ const Notes = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const token = localStorage.getItem('authToken');
+    console.log(token);
+
     axios
       .post('http://127.0.0.1:5000/notes', newNote, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
+        headers: { Authorization: `Bearer ${token}` }
       })
       .then((response) => {
-        setNotes([...notes, response.data]); // Add the new note to the state
-        setNewNote({ name: '', content: '' }); // Clear input fields
+        console.log(response);  // Log response to check the structure
+        if (response.data && response.data.message === "Note added successfully") {
+          setNotes(prevNotes => [...prevNotes, newNote]); // Add the new note
+          setNewNote({ name: '', content: '' }); // Clear input fields
+        }
       })
       .catch((error) => {
         console.error('There was an error adding the note:', error);
@@ -55,14 +61,19 @@ const Notes = () => {
 
   // Handle deleting oldest note
   const handleDelete = () => {
+    const token = localStorage.getItem('authToken');
+    console.log(token)
+
     axios
       .delete('http://127.0.0.1:5000/notes', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
+        headers: { Authorization: `Bearer ${token}` }
       })
       .then((response) => {
         // Fetch the updated list of notes after deletion
         axios
-          .get('http://127.0.0.1:5000/notes')
+          .get('http://127.0.0.1:5000/notes', {
+            headers: { Authorization: `Bearer ${token}` }
+          })
           .then((response) => {
             setNotes(response.data); // Update state with the new list
           })
@@ -120,7 +131,7 @@ const Notes = () => {
     <div style={{ textAlign: 'center', padding: '0 100px' }}>
       <h1>Austin's Notetaking App!</h1>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
         <input
           type="text"
           name="name"
@@ -137,13 +148,10 @@ const Notes = () => {
           placeholder="Note Content"
           style={{ flex: 1, textAlign: 'center' }}
         />
-    </form>
-
-    <div>
-        <button type="submit" style={{ marginTop: '10px' }}>
-          Add Note
-        </button>
-    </div>
+        <div style={{ marginTop: '10px' }}>
+          <button type="submit">Add Note</button>
+        </div>
+      </form>
 
       <button onClick={handleDelete} style={{ marginTop: '10px' }}>
         Delete Oldest Note
