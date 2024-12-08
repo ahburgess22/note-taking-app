@@ -144,7 +144,7 @@ const Notes = () => {
       <h1>Austin's Notetaking App!</h1>
 
       <button onClick={handleLogout} style = {{ marginBottom: '20px', backgroundColor: 'red', color: 'white', border: '1px solid darkred', padding: '10px 20px', cursor: 'pointer', borderRadius: '5px'}}>
-        Logout
+        Log out
       </button>
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
