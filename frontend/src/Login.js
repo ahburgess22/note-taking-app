@@ -19,7 +19,7 @@ function Login() {
       }
 
       try {
-        const response = await axios.post('http://127.0.0.1:5000/register', { email, password });
+        const response = await axios.post('https://afternoon-caverns-34924-2db39ffab924.herokuapp.com/register', { email, password });
         console.log('Registration successful:', response);
         // Optionally, auto-login after registration or show a success message
         navigate('/notes');
@@ -30,7 +30,7 @@ function Login() {
     } else {
       // Login logic
       try {
-        const response = await axios.post('http://127.0.0.1:5000/login', { email, password });
+        const response = await axios.post('https://afternoon-caverns-34924-2db39ffab924.herokuapp.com/login', { email, password });
         localStorage.setItem('authToken', response.data.token);
         console.log('Login successful:', response);
         navigate('/notes');

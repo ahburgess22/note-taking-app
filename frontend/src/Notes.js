@@ -15,7 +15,7 @@ const Notes = () => {
         window.location.href = '/login'; // Force redirect to login page
     } else {
     axios
-      .get('http://127.0.0.1:5000/notes', {
+      .get('https://afternoon-caverns-34924-2db39ffab924.herokuapp.com/notes', {
         headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}`}
       })
       .then((response) => {
@@ -56,7 +56,7 @@ const Notes = () => {
     console.log(token);
 
     axios
-      .post('http://127.0.0.1:5000/notes', newNote, {
+      .post('https://afternoon-caverns-34924-2db39ffab924.herokuapp.com/notes', newNote, {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then((response) => {
@@ -77,13 +77,13 @@ const Notes = () => {
     console.log(token)
 
     axios
-      .delete('http://127.0.0.1:5000/notes', {
+      .delete('https://afternoon-caverns-34924-2db39ffab924.herokuapp.com/notes', {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then((response) => {
         // Fetch the updated list of notes after deletion
         axios
-          .get('http://127.0.0.1:5000/notes', {
+          .get('https://afternoon-caverns-34924-2db39ffab924.herokuapp.com/notes', {
             headers: { Authorization: `Bearer ${token}` }
           })
           .then((response) => {
@@ -116,7 +116,7 @@ const Notes = () => {
     const updatedNote = notes.find((note) => note.id === id);
     
     axios
-      .put(`http://127.0.0.1:5000/notes/${id}`, updatedNote, {
+      .put(`https://afternoon-caverns-34924-2db39ffab924.herokuapp.com/notes/${id}`, updatedNote, {
         headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
       })
       .then((response) => {
