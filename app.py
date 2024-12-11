@@ -1,14 +1,18 @@
 from flask import Flask, jsonify, request
 from flask_pymongo import PyMongo
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from flask_bcrypt import Bcrypt
-from bson import ObjectId
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+from dotenv import load_dotenv
+import os
 import uuid
 import datetime
 import bcrypt
-import jwt
-from functools import wraps
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -17,11 +21,23 @@ app = Flask(__name__)
 CORS(app)
 
 # MongoDB URI: Update with local MongoDB URI if necessary (use "mongodb://localhost:27017/Notes" if local)
+# uri = "mongodb+srv://ahburgess22:%40nlRJ2018@notetaking-app.ytfmm.mongodb.net/notetaking_app_db?retryWrites=true&w=majority&appName=notetaking-app"
+uri = os.getenv('MONGO_URI')
+
+# Create a new client and connect to the server
+client = MongoClient(uri, server_api=ServerApi('1'))
+# Send a ping to confirm a successful connection
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
+
 # Set up the secret key for JWT encoding/decoding
 app.config["JWT_SECRET_KEY"] = 'super_secure_and_random_jwt_secret' # change this for production
 
 # MongoDB URI: Update with local MongoDB URI if necessary
-app.config["MONGO_URI"] = "mongodb://localhost:27017/Notes"
+app.config["MONGO_URI"] = uri
 
 # Initialize JWT and Bcrypt
 jwt = JWTManager(app)
